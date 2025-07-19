@@ -1,0 +1,47 @@
+Arduino Accident Alert System - Pin Connections
+==============================================
+
+1. MPU6050 (Accelerometer/Gyroscope - I2C)
+------------------------------------------
+MPU6050 Pin     -> Arduino Uno R4 Pin     | Notes
+-------------------------------------------------
+VCC             -> 5V                     | Power supply
+GND             -> GND                    | Ground
+SDA             -> A4                     | I2C data line
+SCL             -> A5                     | I2C clock line
+
+2. NEO-6M GPS Module (UART via SoftwareSerial)
+----------------------------------------------
+GPS Pin         -> Arduino Uno R4 Pin     | Notes
+-------------------------------------------------
+VCC             -> 5V                     | Power supply (some modules use 3.3V, check yours)
+GND             -> GND                    | Ground
+TX              -> D4                     | GPS → Arduino (RX)
+RX              -> D3                     | Arduino → GPS (TX)
+*Use voltage divider for GPS RX if it’s 3.3V logic only
+
+3. SIM800L GSM Module (UART via SoftwareSerial)
+-----------------------------------------------
+SIM800L Pin     -> Arduino Uno R4 Pin     | Notes
+-------------------------------------------------
+VCC             -> External 4V Power      | DO NOT use 5V or 3.3V from Arduino
+GND             -> GND                    | Common Ground with Arduino
+TX              -> D7                     | SIM800L → Arduino (RX)
+RX              -> D8                     | Arduino → SIM800L (TX)
+*Use voltage divider or level shifter for SIM800L RX
+
+4. Push Button
+--------------
+Push Button Pin -> Arduino Uno R4 Pin     | Notes
+-------------------------------------------------
+One side        -> D2                     | Digital input
+Other side      -> GND                    | Pulls to GND when pressed
+
+5. Power Supply Summary
+------------------------
+Component        | Voltage Required | Source
+----------------------------------------------
+Arduino Uno R4   | 5V               | USB or 9V adapter
+MPU6050          | 3.3V or 5V       | Arduino 5V
+GPS Module       | 3.3V or 5V       | Arduino 5V (check module)
+SIM800L          | 3.7V – 4.2V      | External battery or buck converter

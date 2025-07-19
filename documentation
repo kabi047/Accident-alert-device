@@ -1,0 +1,113 @@
+
+Accident Alert System Using Arduino Uno R4 WiFi - Detailed Project Report
+========================================================================
+
+1. Introduction
+---------------
+Accidents on roads can lead to life-threatening situations, especially when emergency services are not informed in time. This project presents a real-time accident detection and alert system using Arduino Uno R4 WiFi, MPU6050 accelerometer, GPS module (NEO-6M), and GSM module (SIM800L). The system is designed to detect accidents based on sudden motion and send alert messages with the precise GPS location to predefined contacts. This system is compact, low-cost, and suitable for motorcycles, cars, and other vehicles.
+
+2. Objective
+------------
+To design and implement an Arduino-based device that can:
+- Detect vehicular accidents using accelerometer data.
+- Determine the GPS location of the accident.
+- Send an SMS alert to emergency contacts using a GSM module.
+- Allow manual override in case of false triggers.
+
+3. Components and Modules
+--------------------------
+3.1 Arduino Uno R4 WiFi
+    - Acts as the central controller.
+    - Processes data from MPU6050 and GPS.
+    - Communicates with GSM module.
+
+3.2 MPU6050
+    - Measures acceleration and angular velocity.
+    - Used to detect a sudden change in motion (possible accident).
+
+3.3 NEO-6M GPS Module
+    - Provides real-time location in latitude and longitude.
+    - Connected via SoftwareSerial to minimize pin conflict.
+
+3.4 SIM800L GSM Module
+    - Sends SMS alerts to emergency contacts.
+    - Requires stable 3.7–4.2V external power supply.
+
+3.5 Push Button
+    - Allows manual termination of alert process.
+    - Connected with internal pull-up logic.
+
+3.6 Power Supply
+    - Arduino powered via USB or 9V adapter.
+    - SIM800L powered via external Li-ion battery or buck converter.
+
+4. System Architecture
+----------------------
+The MPU6050 constantly feeds motion data to the Arduino. When acceleration surpasses a set threshold (e.g., >2.5g), the Arduino checks GPS location and triggers the SIM800L to send a detailed SMS containing a Google Maps link with the location coordinates. The system waits for reset via the push button.
+
+5. Hardware Interfacing
+------------------------
+| Component     | Arduino Pin | Notes                         |
+|---------------|-------------|-------------------------------|
+| MPU6050 SDA   | A4          | I2C Data Line                 |
+| MPU6050 SCL   | A5          | I2C Clock Line                |
+| MPU6050 VCC   | 5V          | Powered via Arduino           |
+| MPU6050 GND   | GND         | Common ground                 |
+| GPS TX        | D4          | GPS Data → Arduino            |
+| GPS RX        | D3          | Arduino → GPS (via divider)   |
+| GPS VCC       | 5V          | Confirm module requirement    |
+| GPS GND       | GND         |                               |
+| SIM800L TX    | D7          | GSM Data → Arduino            |
+| SIM800L RX    | D8          | Arduino → GSM (via divider)   |
+| SIM800L VCC   | 3.7–4.2V    | Use external Li-ion/Buck      |
+| SIM800L GND   | GND         |                               |
+| Push Button   | D2          | With INPUT_PULLUP             |
+| Push Button   | GND         |                               |
+
+6. Software Implementation
+---------------------------
+- Written in Arduino IDE using C++.
+- Uses TinyGPS++ for parsing NMEA GPS data.
+- Uses SoftwareSerial for UART on digital pins.
+- Acceleration is normalized and checked against a crash threshold.
+- If GPS data is valid, constructs a message with Google Maps link.
+- Sends the message using AT commands via GSM module.
+
+7. Features
+-----------
+- Real-time detection of accidents.
+- Precise location sharing via SMS.
+- Manual override switch for false positives.
+- Minimal hardware and easy to assemble.
+- Expandable and modular design.
+
+8. Limitations
+--------------
+- GPS requires open sky for accurate location.
+- SIM800L is sensitive to power; unstable power may cause reset.
+- Delays are used for serial communication; can be optimized.
+
+9. Future Work
+--------------
+- Use interrupts instead of delay-based polling.
+- Add SD card for logging accident data.
+- Integrate OLED for user feedback.
+- Web interface or mobile app for tracking and control.
+- Real-time location updates to emergency server or cloud.
+
+10. Conclusion
+--------------
+The developed Arduino-based accident alert system is a reliable, low-cost solution for improving post-accident response times. By integrating motion detection, location services, and GSM communication, the system serves as an effective tool for vehicle safety and emergency notification. It can be enhanced further with IoT connectivity and mobile application support.
+
+11. References
+--------------
+- Arduino.cc Documentation
+- TinyGPS++ Library GitHub
+- SIM800L AT Command Set
+- MPU6050 Data Sheet
+
+Prepared by:
+-------------
+Name: Kabileshwaran S
+Email: lakshmehitech@gmail.com
+GitHub: https://github.com/kabi047
